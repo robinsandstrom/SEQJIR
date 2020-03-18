@@ -1,6 +1,6 @@
 from SEQIJR import SEQIJR
 from FileReader import FileReader
-from ParameterEstimator import ParameterEstimator
+#from ParameterEstimator import ParameterEstimator
 import numpy as np
 import matplotlib.pyplot as plt
 

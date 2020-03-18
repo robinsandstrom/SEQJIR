@@ -1,6 +1,6 @@
 import numpy as np
 
-class SEQIJR2:
+class SEQIJR:
     def __init__(self, N=1, Pi=0, mu=0, b=1,
                  e_E=.2, e_Q=.1, e_J=.05,
                  g_1=.5, g_2=.5,
