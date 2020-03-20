@@ -4,7 +4,7 @@ from FileReader import FileReader
 import numpy as np
 import matplotlib.pyplot as plt
 
-covid19_filename = 'COVID-19-geographic-disbtribution-worldwide-2020-03-16.xls'
+covid19_filename = 'COVID-19-geographic-disbtribution-worldwide-2020-03-20.xlsx'
 population_filename = 'PopulationByCountry.xlsx'
 
 country = 'Sweden'
