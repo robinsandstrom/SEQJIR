@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 covid19_filename = 'COVID-19-geographic-disbtribution-worldwide-2020-03-20.xlsx'
 population_filename = 'PopulationByCountry.xlsx'
 
-country = 'Sweden'
+country = 'United_Kingdom'
 
 
 files = FileReader(covid19_filename, population_filename)
@@ -16,7 +16,7 @@ x_confirmed = files.create_t_vector(country)
 y_confirmed = files.cases(country)
 
 # Greater Toronto Area
-N = .5 * files.population(country)
+N = .5 * files.population(country.replace('_', ' '))
 Pi = 0
 mu = 1 / (80 * 365)       # 1/(80*365) (average age in days)^(-1)
 b = .8
