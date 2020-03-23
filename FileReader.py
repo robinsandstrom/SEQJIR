@@ -57,10 +57,21 @@ class FileReader:
         for row in range(1, worksheet.nrows):
             dictionary[worksheet.cell_value(row, 0)] = int(worksheet.cell_value(row, 1))
         return dictionary
-        return dictionary
 
     def population(self, country):
         return self.populations[country]
+
+    def healthys(self, country, min_cases=100, sick_days=7):
+        all_cases = self.covid19[country][0]
+        cases = self.covid19[country][0][self.covid19[country][0] >= min_cases]
+        deaths = self.covid19[country][1]
+        healthys =[]
+        start_index = len(all_cases)-len(cases)
+
+        for i in range(start_index, len(all_cases)):
+            healthys.append(all_cases[i-sick_days]-deaths[i])
+
+        return healthys
 
     def cases(self, country, min_cases=100):
         return self.covid19[country][0][self.covid19[country][0] >= min_cases]

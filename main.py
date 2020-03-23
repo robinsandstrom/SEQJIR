@@ -3,34 +3,24 @@ from FileReader import FileReader
 #from ParameterEstimator import ParameterEstimator
 import numpy as np
 import matplotlib.pyplot as plt
+from parameters import*
 
 covid19_filename = 'COVID-19-geographic-disbtribution-worldwide-2020-03-20.xlsx'
 population_filename = 'PopulationByCountry.xlsx'
 
-country = 'United_Kingdom'
+country = 'Sweden'
 
 
 files = FileReader(covid19_filename, population_filename)
 
 x_confirmed = files.create_t_vector(country)
 y_confirmed = files.cases(country)
+d_confirmed = files.deaths(country)
+h_confirmed = files.healthys(country)
 
 # Greater Toronto Area
-N = .5 * files.population(country.replace('_', ' '))
-Pi = 0
-mu = 1 / (80 * 365)       # 1/(80*365) (average age in days)^(-1)
-b = .8
-e_E = 0
-e_Q = 0
-e_J = 0.05
-g_1 = 1 / 19
-g_2 = 1 / 7
-s_1 = 1 / 14
-s_2 = 1 / 7
-k_1 = 1 / 3
-k_2 = 1 / 14
-d_1 = 0.05/7
-d_2 = 0.03/7
+N = 1 * files.population(country.replace('_', ' '))
+
 
 model = SEQIJR(N, Pi, mu, b,
                 e_E, e_Q, e_J,
@@ -77,7 +67,7 @@ y_0 = np.array([S_p_1[m],
                 aIJ_p_1[m],
                 aD_p_1[m]], dtype=float).transpose()
 
-P = 1
+P = 100
 
 t_start = min(files.create_t_vector(country))
 t_end = max(files.create_t_vector(country)) + P
@@ -86,24 +76,27 @@ x, S_p, E_p, Q_p, I_p, J_p, R_p, aJ_p, aIJ_p, aD_p = model.prediction(y_0, t_sta
 
 plot_L = True
 
-if plot_L:
-    plt.plot(x, aJ_p)
-    plt.plot(x_confirmed, y_confirmed, 'bo', fillstyle='none')
-else:
-    m = int(max(files.create_t_vector(country)) / h)
-    y_1 = np.array([S_p[m],
-                    E_p[m],
-                    Q_p[m],
-                    I_p[m],
-                    J_p[m],
-                    R_p[m],
-                    aJ_p[m],
-                    aIJ_p[m],
-                    aD_p[m]], dtype=float).transpose()
-    model.g_1 = 1
-    t_start2 = max(files.create_t_vector(country))
-    x2, S_p2, E_p2, Q_p2, I_p2, J_p2, R_p2, aJ_p2, aIJ_p2, aD_p2 = model.prediction(y_1, t_start2, t_end, h)
-    plt.plot([min(x), max(x)], [571*1.5, 571*1.5])
-    plt.plot(x, 0.05*J_p)
-    plt.plot(x2, 0.05*J_p2)
+
+print(model.R_0())
+
+fig = plt.figure()
+
+plt.subplot(2, 2, 1)
+plt.plot(x, aIJ_p)
+plt.plot(x_confirmed, y_confirmed, 'bo', fillstyle='none')
+
+plt.subplot(2, 2, 2)
+plt.plot(x, aD_p)
+plt.plot(x_confirmed, d_confirmed, 'bo', fillstyle='none')
+
+plt.subplot(2, 2, 3)
+plt.plot(x, R_p)
+plt.plot(x_confirmed, h_confirmed, 'bo', fillstyle='none')
+
+
+plt.subplot(2, 2, 4)
+plt.plot(x, J_p + I_p)
+#plt.plot(x_confirmed, h_confirmed, 'bo', fillstyle='none')
+
+
 plt.show()
