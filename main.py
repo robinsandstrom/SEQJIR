@@ -5,10 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from parameters import*
 
-covid19_filename = 'COVID-19-geographic-disbtribution-worldwide-2020-03-20.xlsx'
-population_filename = 'PopulationByCountry.xlsx'
+covid19_filename = 'COVID-19-geographic-distribution-sweden-2020-03-24.xlsx'
+population_filename = 'PopulationBySwedishRegion.xlsx'
 
-country = 'Sweden'
+country = 'Stockholm'
 
 
 files = FileReader(covid19_filename, population_filename)
@@ -67,7 +67,7 @@ y_0 = np.array([S_p_1[m],
                 aIJ_p_1[m],
                 aD_p_1[m]], dtype=float).transpose()
 
-P = 100
+P = 0
 
 t_start = min(files.create_t_vector(country))
 t_end = max(files.create_t_vector(country)) + P

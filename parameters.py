@@ -1,7 +1,7 @@
 # Greater Toronto Area
 Pi = 0
 mu = 1 / (80 * 365)       # 1/(80*365) (average age in days)^(-1)
-b = 0.82 # Smittgraden
+b = 0.5 # Smittgraden
 e_E = 0.3 # Smittsamhet för exposed
 e_Q = 0.1 # Smittsamhet för karantänade
 e_J = 0.5 # Smittsamhet för isolerade
