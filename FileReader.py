@@ -17,6 +17,8 @@ class FileReader:
         cases_col = -1
         deaths_col = -1
         country_col = -1
+        in_hospital_col = -1
+        in_intensive_care_col = -1
         for col in range(worksheet.ncols):
             temp = worksheet.cell_value(0, col).casefold()
             #print(temp)
@@ -26,6 +28,11 @@ class FileReader:
                 deaths_col = col
             elif (temp == 'countries and territories') or (temp == 'countryexp'):
                 country_col = col
+            elif (temp == 'In hospital'):
+                in_hospital_col = col
+            elif (temp == 'In intensive care'):
+                in_intensive_care_col = col
+
         if (cases_col == -1) or (deaths_col == -1) or (country_col == -1):
             print('Counld not find all columns')
         else:
@@ -34,9 +41,11 @@ class FileReader:
                 if temp_country == current_country:
                     cases = np.append(cases, np.array([worksheet.cell_value(row, cases_col)], dtype=int), 0)
                     deaths = np.append(deaths, np.array([worksheet.cell_value(row, deaths_col)], dtype=int), 0)
+                    in_hospital = np.append(in_hospital, np.array([worksheet.cell_value(row, in_hospital_col)], dtype=int), 0)
+                    in_intensive_care = np.append(in_intensive_care, np.array([worksheet.cell_value(row, in_intensive_care_col)], dtype=int), 0)
                 else:
                     if current_country != '':
-                        dictionary[current_country] = [np.cumsum(np.flip(cases)), np.cumsum(np.flip(deaths))]
+                        dictionary[current_country] = [np.cumsum(np.flip(cases)), np.cumsum(np.flip(deaths)), np.flip(in_hospital), np.flip(in_intensive_care)]
                     if worksheet.cell_value(row, 2) != '':
                         cases = np.array([worksheet.cell_value(row, cases_col)], dtype=int)
                     else:
@@ -45,6 +54,16 @@ class FileReader:
                         deaths = np.array([worksheet.cell_value(row, deaths_col)], dtype=int)
                     else:
                         deaths = np.array([0], dtype=int)
+
+                    if worksheet.cell_value(row, 6) != '':
+                        in_hospital = np.array([worksheet.cell_value(row, deaths_col)], dtype=int)
+                    else:
+                        in_hospital = np.array([0], dtype=int)
+
+                    if worksheet.cell_value(row, 7) != '':
+                        in_intensive_care = np.array([worksheet.cell_value(row, deaths_col)], dtype=int)
+                    else:
+                        in_intensive_care = np.array([0], dtype=int)
                     current_country = temp_country
         return dictionary
 
@@ -78,6 +97,12 @@ class FileReader:
 
     def deaths(self, country, min_cases=100):
         return self.covid19[country][1][self.covid19[country][0] >= min_cases]
+
+    def in_hospital(self, country, min_cases=10):
+        return self.covid19[country][2][self.covid19[country][0] >= min_cases]
+
+    def in_intensive_care(self, country, min_cases=10):
+        return self.covid19[country][3][self.covid19[country][0] >= min_cases]
 
     def number_of_points(self, country, min_cases=100):
         return np.shape(self.cases(country, min_cases))[0]
