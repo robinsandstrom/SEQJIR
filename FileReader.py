@@ -28,9 +28,9 @@ class FileReader:
                 deaths_col = col
             elif (temp == 'countries and territories') or (temp == 'countryexp'):
                 country_col = col
-            elif (temp == 'In hospital'):
+            elif (temp == 'in hospital care'):
                 in_hospital_col = col
-            elif (temp == 'In intensive care'):
+            elif (temp == 'in intensive care'):
                 in_intensive_care_col = col
 
         if (cases_col == -1) or (deaths_col == -1) or (country_col == -1):
@@ -55,13 +55,13 @@ class FileReader:
                     else:
                         deaths = np.array([0], dtype=int)
 
-                    if worksheet.cell_value(row, 6) != '':
-                        in_hospital = np.array([worksheet.cell_value(row, deaths_col)], dtype=int)
+                    if worksheet.cell_value(row, 8) != '':
+                        in_hospital = np.array([worksheet.cell_value(row, in_hospital_col)], dtype=int)
                     else:
                         in_hospital = np.array([0], dtype=int)
 
-                    if worksheet.cell_value(row, 7) != '':
-                        in_intensive_care = np.array([worksheet.cell_value(row, deaths_col)], dtype=int)
+                    if worksheet.cell_value(row, 9) != '':
+                        in_intensive_care = np.array([worksheet.cell_value(row, in_intensive_care_col)], dtype=int)
                     else:
                         in_intensive_care = np.array([0], dtype=int)
                     current_country = temp_country

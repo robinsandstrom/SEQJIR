@@ -34,5 +34,3 @@ infected = (Q + I + J + C + R + D)/2
 infected[m:np.shape(infected)[0]] = (infected[m:np.shape(infected)[0]]-infected[m])/2.5 + infected[m]
 
 Plotter.plot_cases_deaths(x, infected, D)
-
-print(in_hospital_confirmed)
